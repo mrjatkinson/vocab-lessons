@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rêves et Ambitions</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f4f8;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    select, input, textarea, button {
+      font-size: 1rem;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #3730a3;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .rounded-box {
+      background: #e0e7ff;
+      padding: 10px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h1>🟢 Lesson: Rêves et Ambitions</h1>
+
+  <div class="card">
+    <h2>🧠 Match These</h2>
+    <div>
+      <div class="rounded-box">Un entretien</div>
+      <select>
+        <option>Select</option>
+        <option>An interview</option>
+        <option>There is / There are</option>
+        <option>Last / Latest</option>
+      </select>
+    </div>
+    <div>
+      <div class="rounded-box">Il y a</div>
+      <select>
+        <option>Select</option>
+        <option>An interview</option>
+        <option>There is / There are</option>
+        <option>Last / Latest</option>
+      </select>
+    </div>
+    <button>Submit Answers</button>
+    <div class="feedback">You got 2 out of 8 correct! +2 XP</div>
+  </div>
+
+  <div class="card">
+    <h2>✏️ Fill in the Blank</h2>
+    <p>J’___ un concours demain.</p>
+    <input type="text" placeholder="Hint: Je ____, I hope" />
+    <button>Check</button>
+    <div class="feedback">Correct!</div>
+  </div>
+
+  <div class="card">
+    <h2>📝 Writing</h2>
+    <p>Write a sentence using any vocabulary from this lesson:</p>
+    <textarea rows="4" placeholder="Type your sentence here..."></textarea>
+    <button>Submit Writing</button>
+    <div class="feedback">Thank you for your submission!</div>
+  </div>
+
+  <div class="button-row">
+    <button>⬅️ Back</button>
+    <button>Next ➡️</button>
+  </div>
+</body>
+</html>
