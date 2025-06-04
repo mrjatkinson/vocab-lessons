@@ -1,118 +1,213 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rêves et Ambitions</title>
+  <title>Leçon – Rêves et Ambitions</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
       background: #f0f4f8;
-      padding: 20px;
       max-width: 800px;
       margin: auto;
+      padding: 20px;
     }
-
-    h1, h2 {
-      text-align: center;
-    }
-
     .card {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
       margin-bottom: 20px;
     }
-
-    select, input, textarea, button {
+    h1, h2 { text-align: center; }
+    input, select, textarea, button {
       font-size: 1rem;
       padding: 10px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
       margin-top: 10px;
-      margin-bottom: 10px;
+      border-radius: 8px;
       width: 100%;
       box-sizing: border-box;
+      border: 1px solid #ccc;
     }
-
     button {
-      background-color: #4f46e5;
+      background: #4F46E5;
       color: white;
       border: none;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background 0.2s;
     }
-
-    button:hover {
-      background-color: #3730a3;
-    }
-
+    button:hover { background: #3730A3; }
     .feedback {
       margin-top: 10px;
       font-weight: bold;
     }
-
-    .button-row {
+    .nav {
       display: flex;
       justify-content: space-between;
       margin-top: 20px;
     }
-
-    .rounded-box {
-      background: #e0e7ff;
-      padding: 10px;
-      border-radius: 12px;
-      display: inline-block;
-    }
   </style>
+  <!-- Load LanguageTool for grammar checking -->
+  <script src="https://cdn.jsdelivr.net/npm/@languagetool/languagetool-client"></script>
+  <!-- Load EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
 </head>
 <body>
-  <h1>🟢 Lesson: Rêves et Ambitions</h1>
+  <h1>Rêves et Ambitions 🟢</h1>
 
-  <div class="card">
-    <h2>🧠 Match These</h2>
-    <div>
-      <div class="rounded-box">Un entretien</div>
-      <select>
-        <option>Select</option>
-        <option>An interview</option>
-        <option>There is / There are</option>
-        <option>Last / Latest</option>
-      </select>
-    </div>
-    <div>
-      <div class="rounded-box">Il y a</div>
-      <select>
-        <option>Select</option>
-        <option>An interview</option>
-        <option>There is / There are</option>
-        <option>Last / Latest</option>
-      </select>
-    </div>
-    <button>Submit Answers</button>
-    <div class="feedback">You got 2 out of 8 correct! +2 XP</div>
+  <!-- Page containers -->
+  <div class="card" id="page-0">
+    <h2>🧠 Match Français – Anglais</h2>
+    <div id="match-container"></div>
+    <button onclick="submitMatch()">Submit</button>
+    <div class="feedback" id="feedback-match"></div>
   </div>
 
-  <div class="card">
-    <h2>✏️ Fill in the Blank</h2>
-    <p>J’___ un concours demain.</p>
-    <input type="text" placeholder="Hint: Je ____, I hope" />
-    <button>Check</button>
-    <div class="feedback">Correct!</div>
+  <div class="card hidden" id="page-1">
+    <h2>✏️ Traduction</h2>
+    <p>Translate "Next Saturday" into French:</p>
+    <input id="input-translate" placeholder="e.g. Samedi prochain"/>
+    <button onclick="submitTranslate()">Check</button>
+    <div class="feedback" id="feedback-translate"></div>
   </div>
 
-  <div class="card">
-    <h2>📝 Writing</h2>
-    <p>Write a sentence using any vocabulary from this lesson:</p>
-    <textarea rows="4" placeholder="Type your sentence here..."></textarea>
-    <button>Submit Writing</button>
-    <div class="feedback">Thank you for your submission!</div>
+  <div class="card hidden" id="page-2">
+    <h2>✏️ Complétez la phrase</h2>
+    <p>Je rêve de devenir ____ célèbre.</p>
+    <input id="input-blank" placeholder="célèbre"/>
+    <button onclick="submitBlank()">Check</button>
+    <div class="feedback" id="feedback-blank"></div>
   </div>
 
-  <div class="button-row">
-    <button>⬅️ Back</button>
-    <button>Next ➡️</button>
+  <div class="card hidden" id="page-3">
+    <h2>🔀 Réordonnez la phrase</h2>
+    <p>Reorder to: "À l’âge de cinq ans, j’ai commencé à chanter"</p>
+    <div id="reorder-container"></div>
+    <button onclick="submitReorder()">Check</button>
+    <div class="feedback" id="feedback-reorder"></div>
   </div>
+
+  <div class="card hidden" id="page-4">
+    <h2>📝 Écrivez une phrase</h2>
+    <textarea id="input-writing" rows="4" placeholder="Use a vocabulary word..."></textarea>
+    <button onclick="submitWriting()">Analyse & Submit</button>
+    <div class="feedback" id="feedback-writing"></div>
+  </div>
+
+  <div class="card hidden" id="page-5">
+    <h2>📨 Envoyer les résultats</h2>
+    <input id="input-name" placeholder="Your name"/>
+    <button onclick="submitEmail()">Send to Teacher</button>
+    <div class="feedback" id="feedback-email"></div>
+  </div>
+
+  <div class="nav">
+    <button onclick="changePage(-1)">⬅️ Back</button>
+    <button onclick="changePage(1)">Next ➡️</button>
+  </div>
+
+  <script>
+    emailjs.init("YOUR_USER_ID"); // get from emailjs.com
+
+    const vocabulary = [
+      { fr: "Un entretien", en: "An interview" },
+      { fr: "Il y a", en: "There is / There are" },
+      { fr: "Dernier", en: "Last / Latest" },
+      { fr: "Il y aura", en: "There will be" },
+      { fr: "Chanter", en: "To sing" },
+      { fr: "Avoir confiance", en: "To have confidence" },
+      { fr: "Une soirée", en: "An evening" },
+      { fr: "Un concours", en: "A competition" },
+    ];
+    let score = 0, currentPage = 0;
+
+    function showPage(n){
+      currentPage = Math.max(0, Math.min(5, n));
+      for(let i=0;i<=5;i++){
+        document.getElementById(`page-${i}`).classList.toggle("hidden", i !== currentPage);
+      }
+    }
+
+    // Page 0 setup
+    window.onload = () => {
+      let c = document.getElementById("match-container");
+      vocabulary.forEach((v,i) => {
+        let div = document.createElement("div");
+        div.innerHTML = `<p>${v.fr}</p><select id="sel-${i}"><option></option><option>${v.en}</option></select>`;
+        c.appendChild(div);
+      });
+      // set up reorder parts
+      const parts = ["À l’âge","de cinq ans","j’ai commencé","à chanter"];
+      let rc = document.getElementById("reorder-container");
+      parts.forEach((p,i) => {
+        let b = document.createElement("button");
+        b.textContent = p;
+        b.onclick = () => { b.parentNode.appendChild(b); }; // cycle to end
+        rc.appendChild(b);
+      });
+    };
+
+    function submitMatch(){
+      let correct = 0;
+      vocabulary.forEach((v,i) => {
+        if(document.getElementById(`sel-${i}`).value === v.en) correct++;
+      });
+      score += correct;
+      document.getElementById("feedback-match").textContent = `Correct: ${correct}/8 (+${correct} XP)`;
+    }
+
+    function submitTranslate(){
+      const a = document.getElementById("input-translate").value.toLowerCase().trim();
+      if(a.includes("samedi prochain")) { score++; document.getElementById("feedback-translate").textContent="✓+1 XP"; }
+      else document.getElementById("feedback-translate").textContent="Try again!";
+    }
+
+    function submitBlank(){
+      const a = document.getElementById("input-blank").value.toLowerCase().trim();
+      if(a==="célèbre") {score++; document.getElementById("feedback-blank").textContent="✓+1 XP";}
+      else document.getElementById("feedback-blank").textContent="Incorrect!";
+    }
+
+    function submitReorder(){
+      const buttons = [...document.getElementById("reorder-container").children];
+      const txt = buttons.map(b => b.textContent).join(" ");
+      if(txt === "À l’âge de cinq ans j’ai commencé à chanter") {
+        score++; document.getElementById("feedback-reorder").textContent="✓+1 XP";
+      } else document.getElementById("feedback-reorder").textContent="Not quite!";
+    }
+
+    async function submitWriting(){
+      const txt = document.getElementById("input-writing").value;
+      document.getElementById("feedback-writing").textContent = "Checking...";
+      const response = await LanguageTool.check({
+        language: "fr",
+        text: txt
+      });
+      const issues = response.matches
+        .map(m => `${m.rule.description}: "${txt.substring(m.offset, m.offset + m.length)}"`)
+        .join("\n") || "👍 Looks good!";
+      document.getElementById("feedback-writing").textContent = issues;
+      score++;
+    }
+
+    function submitEmail(){
+      const params = {
+        to_email: "jordan.atkinson@westpark.derby.sch.uk",
+        student_name: document.getElementById("input-name").value,
+        total_score: score,
+        writing: document.getElementById("input-writing").value,
+      };
+      emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID", params)
+        .then(() => document.getElementById("feedback-email").textContent = "✅ Sent!")
+        .catch(err => document.getElementById("feedback-email").textContent = "Error...");
+    }
+
+    function changePage(d){
+      showPage(currentPage + d);
+    }
+
+    showPage(0);
+  </script>
 </body>
 </html>
+
